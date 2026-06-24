@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CRM de Alunos</title>
+
+    <link rel="stylesheet" href="style.css">
+    
+
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <h1>CRM DE ALUNOS</h1>
+
+    </header>
+
+    <main class="container">
+
+        <!-- DASHBOARD -->
+
+        <section class="dashboard">
+
+            <div class="card">
+                <h3>Total de Alunos</h3>
+                <span id="totalAlunos">0</span>
+            </div>
+
+            <div class="card">
+                <h3>Novos Leads</h3>
+                <span id="novosLeads">0</span>
+            </div>
+
+            <div class="card">
+                <h3>Matriculados</h3>
+                <span id="matriculados">0</span>
+            </div>
+
+            <div class="card">
+                <h3>Desqualificados</h3>
+                <span id="cancelados">0</span>
+            </div>
+
+        </section>
+
+        <!-- CADASTRO -->
+
+        <section class="cadastro">
+
+            <h2>Cadastrar Aluno</h2>
+
+            <form id="formCadastro">
+
+                <div class="grid">
+
+                    <div>
+                        <label>Nome</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Telefone</label>
+                        <input
+                            type="text"
+                            id="telefone"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>E-mail</label>
+                        <input
+                            type="email"
+                            id="email"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Curso</label>
+                        <select
+                            id="curso"
+                            required
+                        >
+                            <option value="">
+                                Carregando...
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Status</label>
+                        <select
+                            id="status"
+                            required
+                        >
+                            <option value="Novo Lead">
+                                Novo Lead
+                            </option>
+
+                            <option value="Em Atendimento">
+                                Em Atendimento
+                            </option>
+
+                            <option value="Documentação">
+                                Documentação
+                            </option>
+
+                            <option value="Matriculado">
+                                Matriculado
+                            </option>
+
+                            <option value="Cancelado">
+                                Cancelado
+                            </option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="observacoes">
+
+                    <label>Observações</label>
+
+                    <textarea
+                        id="observacoes"
+                        rows="4"
+                    ></textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Cadastrar Aluno
+                </button>
+
+            </form>
+
+            <div id="mensagem"></div>
+
+        </section>
+
+        <!-- FILTROS -->
+
+        <section class="filtros">
+
+            <h2>Pesquisar Alunos</h2>
+
+            <div class="filtros-grid">
+
+                <input
+                    type="text"
+                    id="campoBusca"
+                    placeholder="Buscar por Nome, Telefone, Email ou ID"
+                >
+
+                <select id="filtroCurso">
+
+                    <option value="">
+                        Todos os Cursos
+                    </option>
+
+                </select>
+
+                <select id="filtroStatus">
+
+                    <option value="">
+                        Todos os Status
+                    </option>
+
+                    <option value="Novo Lead">
+                        Novo Lead
+                    </option>
+
+                    <option value="Em Atendimento">
+                        Em Atendimento
+                    </option>
+
+                    <option value="Documentação">
+                        Documentação
+                    </option>
+
+                    <option value="Matriculado">
+                        Matriculado
+                    </option>
+
+                    <option value="Cancelado">
+                        Desqualificados
+                    </option>
+
+                </select>
+
+                <button
+                    class="btn-primary"
+                    onclick="buscarAlunos()"
+                >
+                    Buscar
+                </button>
+
+                <button
+                    class="btn-secondary"
+                    onclick="limparBusca()"
+                >
+                    Limpar
+                </button>
+
+                <button
+                    class="btn-secondary"
+                    onclick="carregarAlunos()"
+                >
+                    Atualizar Lista
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- LISTAGEM -->
+
+        <section class="listagem">
+
+            <h2>Alunos Cadastrados</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Curso</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="listaAlunos">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL EDIÇÃO -->
+
+    <div
+        id="modalEditar"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <span
+                class="close"
+                onclick="fecharModal()"
+            >
+                &times;
+            </span>
+
+            <h2>Editar Aluno</h2>
+
+            <input
+                type="hidden"
+                id="editId"
+            >
+
+            <div class="grid">
+
+                <div>
+                    <label>Nome</label>
+                    <input
+                        type="text"
+                        id="editNome"
+                    >
+                </div>
+
+                <div>
+                    <label>Telefone</label>
+                    <input
+                        type="text"
+                        id="editTelefone"
+                    >
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        id="editEmail"
+                    >
+                </div>
+
+                <div>
+                    <label>Curso</label>
+                    <select
+                        id="editCurso"
+                    >
+                    </select>
+                </div>
+
+                <div>
+                    <label>Status</label>
+                    <select
+                        id="editStatus"
+                    >
+
+                        <option value="Novo Lead">
+                            Novo Lead
+                        </option>
+
+                        <option value="Em Atendimento">
+                            Em Atendimento
+                        </option>
+
+                        <option value="Documentação">
+                            Documentação
+                        </option>
+
+                        <option value="Matriculado">
+                            Matriculado
+                        </option>
+
+                        <option value="Cancelado">
+                            Cancelado
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div>
+
+                <label>Observações</label>
+
+                <textarea
+                    id="editObservacoes"
+                    rows="4"
+                ></textarea>
+
+            </div>
+
+            <button
+                class="btn-primary"
+                onclick="salvarEdicao()"
+            >
+                Salvar Alterações
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="index.js"> </script>
+
+</body>
+
+</html>
+
+<script>src=""</script>
+
