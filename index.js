@@ -244,10 +244,6 @@ async function cadastrarAluno(event){
             {
                 
                 method: "POST",
-                headers: {
-                    "Content-Type":
-                    "application/json"
-                },
                 body: JSON.stringify(
                     dados
                 )
